@@ -16,7 +16,7 @@ data Arr a = Arr {toArray :: !(Array Integer a)} deriving (Show, Eq)
 
 fromList :: [a] -> Arr a
 fromList [] = error "No empty arrays"
-fromList as = Arr $ listArray (0, genericLength as - 1) as
+fromList as = Arr $ {-# SCC "mk-native-array" #-} listArray (0, genericLength as - 1) as
 
 instance Functor Arr where
   fmap f = Arr . fmap f . toArray
@@ -85,12 +85,11 @@ prop_applicativeInterchange (Blind u) y =
 
 return []
 runTests = $quickCheckAll
---runTests = $verboseCheckAll
 
 main = do
   runTests
   
-  let n = 500
+  let n = 1000
       as = fromList [0..n]
 
   defaultMain [

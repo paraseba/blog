@@ -1,20 +1,20 @@
-{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghc7102" }:
+{ nixpkgs ? import <nixpkgs> {}, haskellPackages ? nixpkgs.pkgs.haskellPackages }:
 let
   inherit (nixpkgs) pkgs;
-  #ghc = pkgs.haskell.packages.${compiler}.ghcWithPackages (ps: with ps; [
-  #ghc = pkgs.profiledHaskellPackages.ghcWithPackages (ps: with ps; [
-  ghc = pkgs.haskellPackages.ghcWithPackages (ps: with ps; [
+  ghcUtils = nixpkgs.pkgs.haskellPackages.ghcWithPackages (ps: with ps; [
+    ghc-mod ghci-ng cabal-helper dash-haskell hasktags hlint
+    structured-haskell-mode stylish-haskell
+    cabal-install
+  ]);
 
-  criterion
-  QuickCheck
+  ghc = haskellPackages.ghcWithPackages (ps: with ps; [
+    criterion
+    QuickCheck
+  ]);
 
-
-  #ghc-mod ghci-ng cabal-helper dash-haskell hasktags hlint structured-haskell-mode stylish-haskell
-
-        ]);
 in
 pkgs.stdenv.mkDerivation {
   name = "my-haskell-env-0";
-  buildInputs = [ ghc ];
+  buildInputs = [ ghc ghcUtils ];
   shellHook = "eval $(egrep ^export ${ghc}/bin/ghc)";
 }
