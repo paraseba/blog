@@ -1,34 +1,43 @@
 body {
     color: #444;
-    font-size: 1em;
+    font-size: 62.5%
     line-height:1.6em;
     margin: 0px auto 0px auto;
-    width: 600px;
+    width: 720px;
     font-family: 'Lora', serif;
+    text-align: justify;
+}
+
+p {
+    font-size: 1.35em;
+    line-height:1.6em;
 }
 
 div#header {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid #888;
     margin-bottom: 30px;
-    padding: 12px 0px 12px 0px;
+    padding: 12px 0px 7px 0px;
+
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.1em;
+    line-height: 1em;
+    color: #888;
 }
 
 div#logo a {
-    color: black;
+    color: inherit;
     float: left;
-    font-size: 18px;
-    font-weight: bold;
     text-decoration: none;
 }
 
 div#header #navigation {
     text-align: right;
+    color: inherit;
 }
 
 div#header #navigation a {
-    color: black;
-    font-size: 18px;
-    font-weight: bold;
+    color: inherit;
     margin-left: 12px;
     text-decoration: none;
     text-transform: uppercase;
@@ -45,24 +54,25 @@ div#footer {
 
 h1 {
     font-family: 'Alegreya Sans', sans-serif;
-    font-weigth: 700;
-    font-size: 3.375em;
+    font-weight: 700;
+    font-size: 4.566em;
     line-height: 1.2em;
     color: #222;
 }
 
 h2 {
     font-family: 'Alegreya Sans', sans-serif;
-    font-weigth: 700;
-    font-size: 2.25em;
+    font-weight: 700;
+    font-size: 3.038em;
     line-height: 1.2em;
     color: #222;
 }
 
 h3 {
     font-family: 'Alegreya Sans', sans-serif;
-    font-weigth: 700;
-    line-height: 1.5em;
+    font-weight: 700;
+    line-height: 1.2em;
+    font-size: 2.025em;
     color: #222;
 }
 
