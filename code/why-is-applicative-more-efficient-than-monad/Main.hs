@@ -16,7 +16,8 @@ data Arr a = Arr {toArray :: !(Array Integer a)} deriving (Show, Eq)
 
 fromList :: [a] -> Arr a
 fromList [] = error "No empty arrays"
-fromList as = Arr $ {-# SCC "mk-native-array" #-} listArray (0, genericLength as - 1) as
+fromList as =
+  Arr $ {-# SCC "mk-native-array" #-} listArray (0, genericLength as - 1) as
 
 instance Functor Arr where
   fmap f = Arr . fmap f . toArray
@@ -29,7 +30,7 @@ instance Applicative Arr where
   fs <*> as = fromList [f a | f <- toList fs, a <- toList as]
 
 instance Monad Arr where
-  return = pure
+  return = fromList . pure
   as >>= f = fromList $ concatMap (toList . f) as
 
 monadWork :: Arr Int -> Int
