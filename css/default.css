@@ -1,8 +1,10 @@
 body {
-    color: black;
-    font-size: 16px;
+    color: #444;
+    font-size: 1em;
+    line-height:1.6em;
     margin: 0px auto 0px auto;
     width: 600px;
+    font-family: 'Lora', serif;
 }
 
 div#header {
@@ -42,11 +44,26 @@ div#footer {
 }
 
 h1 {
-    font-size: 24px;
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weigth: 700;
+    font-size: 3.375em;
+    line-height: 1.2em;
+    color: #222;
 }
 
 h2 {
-    font-size: 20px;
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weigth: 700;
+    font-size: 2.25em;
+    line-height: 1.2em;
+    color: #222;
+}
+
+h3 {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weigth: 700;
+    line-height: 1.5em;
+    color: #222;
 }
 
 div.info {
