@@ -7,6 +7,7 @@ import Data.Array
 import Data.Monoid
 import Data.List (genericLength)
 import Data.Foldable
+import Control.Monad (ap)
 
 import Criterion.Main
 import Test.QuickCheck
@@ -33,18 +34,17 @@ instance Monad Arr where
   return = fromList . pure
   as >>= f = fromList $ concatMap (toList . f) as
 
-monadWork :: Arr Int -> Int
-monadWork as = sum $ do
-  i <- as
-  j <- as
-  return (i + j)
+monadWork :: (Monad f, Foldable f, Num a) => f a -> a
+monadWork as = sum $ ((+) <$> as) `ap` as
 
-applicativeWork :: Arr Int -> Int
+applicativeWork :: (Applicative f, Foldable f, Num a) => f a -> a
 applicativeWork as = sum $ (+) <$> as <*> as
   
+-------------- Tests ------------------------
 instance Arbitrary a => Arbitrary (Arr a) where
   arbitrary = fromList . getNonEmpty <$> arbitrary
   
+prop_equivMonadApplicative :: Arr Int -> Bool
 prop_equivMonadApplicative as =
   monadWork as == applicativeWork as
 
@@ -90,10 +90,18 @@ runTests = $quickCheckAll
 main = do
   runTests
   
-  let n = 1000
-      as = fromList [0..n]
+  -------------- Benchmark ------------------------
+
+  let n  = 500 :: Int
+      l  = [0..n]
+      as = fromList l
 
   defaultMain [
     bgroup "array" [
        bench "applicative" $ nf applicativeWork as
-     , bench "monad"       $ nf monadWork as]]
+     , bench "monad"       $ nf monadWork as]
+
+   ,bgroup "list" [
+       bench "applicative" $ nf applicativeWork l
+     , bench "monad"       $ nf monadWork l]
+    ]
