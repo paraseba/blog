@@ -115,6 +115,11 @@ div#footer a {
     color: inherit;
 }
 
+div.footnotes p {
+    font-size: 0.85em;
+    line-height:1.6em;
+}
+
 h1 {
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
@@ -144,4 +149,36 @@ div.info {
     color: #555;
     font-size: 14px;
     font-style: italic;
+}
+
+sub, sup {
+  /* Specified in % so that the sup/sup is the
+     right size relative to the surrounding text */
+  font-size: 75%;
+
+  /* Zero out the line-height so that it doesn't
+     interfere with the positioning that follows */
+  line-height: 0;
+
+  /* Where the magic happens: makes all browsers position
+     the sup/sup properly, relative to the surrounding text */
+  position: relative;
+
+  /* Note that if you're using Eric Meyer's reset.css, this
+     is already set and you can remove this rule */
+  vertical-align: baseline;
+
+  background-color: #F7F7FF;
+  color: #06287e;
+}
+
+sup {
+  /* Move the superscripted text up */
+  top: -0.5em;
+}
+
+sub {
+  /* Move the subscripted text down, but only
+     half as far down as the superscript moved up */
+  bottom: -0.25em;
 }
