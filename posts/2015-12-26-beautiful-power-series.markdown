@@ -2,7 +2,7 @@
 title: Beautiful Power Series
 ---
 
-I'm getting better at Haskell, or at least that's what I want to believe. Anyway,
+I'm getting better at Haskell, or at least that's what I choose to believe. Anyway,
 I recently joined Haskell-cafe, one of the e-mail distribution lists, and I found
 this great
 [thread](https://mail.haskell.org/pipermail/haskell-cafe/2015-December/122521.html)
