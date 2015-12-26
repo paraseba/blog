@@ -3,16 +3,16 @@ title: Why is Applicative More Efficient Than Monad
 author: Sebastian Galkin
 ---
 
-It is well known that Monad is more powerful than Applicative Functor. Using
-the Monad methods you can implement the Applicative ones. To the point that in
+It is well known that `Monad` is more powerful than `Applicative` Functor. Using
+the Monad methods you can implement the Applicative ones, to the point that in
 recent GHC versions we have
 
 ``` haskell
-class Applicative m => Monad m where
+class Applicative m => Monad m
 
 ```
 
-with laws
+with equivalence laws
 
 
 ``` haskell
@@ -21,7 +21,7 @@ pure = return
 (<*>) = ap
 ```
 
-and the implementation
+and default implementation
 
 ```haskell
 ap :: (Monad m) => m (a -> b) -> m a -> m b
@@ -31,20 +31,22 @@ ap m1 m2 = do
   return (x1 x2)
 ```
 
-There are many good examples of Applicatives that are not, and can not be Monads,
+There are many good examples of Applicatives that are not, and can not be, `Monads`,
 like
 [Validation](http://haddock.stackage.org/lts-3.19/either-4.4.1/Data-Either-Validation.html)
-and [ZipList](http://haddock.stackage.org/base-4.8.2.0/Control-Applicative.html#v:ZipList)
+and [ZipList](http://haddock.stackage.org/lts-3.19/base-4.8.1.0/Control-Applicative.html#v:ZipList)
 
-But the question I asked myself is:
+But the question I was asking myself these days:
 
 > If we have an Applicative that is also a Monad,
 > is there any reason to prefer `<*>` over `ap`
 
-From the Monad law above we know that in fact they produce the same result, but
+## Developing some intuition
+
+From the Monad laws above we know that in fact they produce the same result, but
 could important performance differences exist?
 
-Comparing the Monad and Applicative minimal implementations, we can expect some
+Comparing the `Monad` and `Applicative` minimal implementations, we can expect some
 kind of performance difference. After all, with `>>=` the continuation function
 has to create the monadic context dynamically:
 
@@ -52,19 +54,14 @@ has to create the monadic context dynamically:
 (>>=) :: Monad m => m a -> (a -> m b) -> m b
 ```
 
-The function has type `Monad m => a -> m b`, so it has to create the context
-during execution. On the other hand, for Applicative, the output context
+The right argument to `>>=` has type `Monad m => a -> m b`, so it has to
+create the monadic context
+during execution. On the other hand, for `Applicative`, the output context
 is fully defined by the "program" not by the evaluation of the function:
 
 ```haskell
 (<*>) :: Applicative f => f (a -> b) -> f a -> f b
 ```
-
-Can we use the fact that the applicative context is known at compilation to
-get a performance advantage when compared to the monad? The goal is find a
-monad where using `<*>` does less work than calling `ap`.
-
-## Developing some intuition
 
 When we do `ma >>= f`, `f` is in charge of creating the final monadic context.
 But `f :: a -> m b` doesn't have access to the original context it is being
@@ -77,24 +74,24 @@ to the initial one. In that way, there is opportunity for optimizing the creatio
 of the output context.
 
 Based on this intuition, let's try to find an example in a monad where creating
-the output context could be optimized with more knowledge.
+the output context could be optimized with the extra knowledge.
 
 ## An array Monad
 
 Regular Haskell Arrays, in `Data.Array` are not monads or applicatives. They are
-too powerful, allowing for arbitrary index values. For example, let's take right
+too powerful, allowing for arbitrary index values. For example, let's take the right
 identity law for monads
 
 ```haskell
   as >>= return = as
 ```
 
-`as` will have certain index values, but we have no way make `return` create
-an array with the same index values for all `as`. There is no way to satisfy
+`as` will have certain index values, but we have no way to make `return` create
+an array with the same index values `as` has, for all `as`. There is no way to satisfy
 the law.
 
-But we can create our own, much simplified 1D array that can in fact be turned
-into a Monad. Let's create the most basic array, in fact using Haskell's
+But we can create our own, much simplified, 1D array that can in fact be turned
+into a Monad. Let's write the most basic array, in fact using Haskell's
 `Data.Array` as a backend:
 
 
@@ -106,8 +103,10 @@ fromList [] = error "No empty arrays"
 fromList as = Arr $ listArray (0, genericLength as - 1) as
 ```
 
-We can only create these arrays from a list. Now we provide instances for
-`Functor`, `Applicative` and `Monad`.
+We can only create these arrays from a list. These are terrible arrays,
+performance is going to be awful, but that's not the point.
+
+Now we provide instances for `Functor`, `Applicative` and `Monad`.
 
 ```haskell
 instance Functor Arr where
@@ -117,7 +116,7 @@ Nothing fancy there, the usual unwrapping and wrapping and delegating to
 `Data.Array`'s implementation. 
 
 For the `<*>` to behave similarly to lists, we want to apply every function
-on the left to every value in the array on the right. We can use list
+on the left to every value in the right argument array. We can use list
 comprehension and the fact that `Data.Arrays` are `Foldable` so they provide
 `toList`. Since we are at it, we make our `Arr` also `Foldable`
 
@@ -130,11 +129,12 @@ instance Applicative Arr where
   fs <*> as = fromList [f a | f <- toList fs, a <- toList as]
 ```
 
-The key here is that we only ever have to create a single `Arr`, since we know
-the applicative contex on the left and right, we know exactly what the size
-of the resulting array will be, and we can just construct it. This is all
-very inefficient, for instance our `fromList` iterates the list more than once,
-but it shows the point of not requiring more than one `Arr` construction.
+Again, this is going to be horrible performance, we turn the arrays into lists,
+then use the lists for the cartesian product, and finally turn the resulting
+back into an `Arr`.
+The key here is that we only create a single `Arr`, since we know
+the applicative contexts on the left and right, we know exactly what the size
+of the resulting array will be, and we can just construct it.
 
 On the other hand, when we make `Arr` a `Monad`
 
@@ -150,32 +150,49 @@ need to create yet another big array. `Data.Array` is strict on the indexes, thi
 is more work that for the `Applicative` case.
 
 ### Benchmark
-Let's run the same operation using both the `Applicative` and the `Monad`
+Let's run the same operation using both the `Applicative` and the `Monad`. The
+fantastic [criterion](http://haddock.stackage.org/lts-3.19/criterion-1.1.0.0/index.html)
+library can be used to get some numbers.
 
 ```haskell
-monadWork :: Arr Int -> Int
-monadWork as = sum $ do
-  i <- as
-  j <- as
-  return (i + j)
-
-applicativeWork :: Arr Int -> Int
+applicativeWork :: (Applicative f, Foldable f, Num a) =>
+  f a -> a
 applicativeWork as = sum $ (+) <$> as <*> as
 
+monadWork :: (Monad f, Foldable f, Num a) =>
+  f a -> a
+monadWork as = sum $ ((+) <$> as) `ap` as
+```
+
+We sum the results of a cartesian product, both on the applicative context,
+using `<*>`, and on the monadic context using `ap`. And now we drive it with
+criterion's `defaultMain` and a reasonable size. As a control case, we do the
+same for lists.
+
+```haskell
 main = do
-  let n = 1000
-      as = fromList [0..n]
+  let n  = 500 :: Int
+      l  = [0..n]
+      as = fromList l
 
   defaultMain [
     bgroup "array" [
        bench "applicative" $ nf applicativeWork as
-     , bench "monad"       $ nf monadWork as]]
+     , bench "monad"       $ nf monadWork as]
+
+   ,bgroup "list" [
+       bench "applicative" $ nf applicativeWork l
+     , bench "monad"       $ nf monadWork l]
+    ]
 ```
 
-Using criterion we can verify the intuition, the Applicative is more than three
-times faster than the Monad.
+<img width="100%" src="../images/array-criterion.png" alt="Criterion Array Result"/>
 
-<img width="100%" src="../images/array-criterion.png" alt="Criterion Array Result">
+We see for `Arr` the `Applicative` is around three times faster than the `Monad`,
+while for lists, times are exactly the same.
+
+So, that's one reason to prefer `<*>` over `ap`, for some monads the former can
+be vastly more efficient.
 
 
 ## Code
