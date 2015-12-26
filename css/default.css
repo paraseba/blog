@@ -1,3 +1,50 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* ----------- end reset --------- */
+
+
 body {
     color: #444;
     font-size: 62.5%
@@ -11,13 +58,14 @@ body {
 p {
     font-size: 1.35em;
     line-height:1.6em;
+    margin: 1em 0;
 }
 
-a:link, a:visited {
-    color: inherit;
+#content a:link, #content a:visited {
+    color: inherit; 
 }
 
-a:hover, a:active {
+#content a:hover, #content a:active {
     padding: 2px 0px;
     background-color: #F7F7FF;
     color: #06287e;
@@ -55,12 +103,16 @@ div#header #navigation a {
 }
 
 div#footer {
-    border-top: solid 2px black;
+    border-top: solid 2px #888;
     color: #555;
-    font-size: 12px;
+    font-size: 0.75em;
     margin-top: 30px;
     padding: 12px 0px 12px 0px;
     text-align: right;
+}
+
+div#footer a {
+    color: inherit;
 }
 
 h1 {
@@ -68,7 +120,8 @@ h1 {
     font-weight: 700;
     font-size: 4.566em;
     line-height: 1.2em;
-    color: #222;
+    color: #191C46;
+    margin: 0.67em 0
 }
 
 h2 {
