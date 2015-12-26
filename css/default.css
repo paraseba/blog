@@ -55,7 +55,7 @@ body {
     text-align: justify;
 }
 
-p {
+p, ul, ol {
     font-size: 1.35em;
     line-height:1.6em;
     margin: 1em 0;
