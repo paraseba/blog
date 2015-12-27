@@ -61,6 +61,14 @@ p, ul, ol {
     margin: 1em 0;
 }
 
+strong {
+    font-weight: 600;
+}
+
+em, i {
+    font-style: italic;
+}
+
 #content a:link, #content a:visited {
     color: inherit; 
 }
@@ -126,7 +134,7 @@ h1 {
     font-size: 4.566em;
     line-height: 1.2em;
     color: #191C46;
-    margin: 0.67em 0
+    margin: 0.3em 0
 }
 
 h2 {
