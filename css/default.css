@@ -47,8 +47,8 @@ table {
 
 body {
     color: #444;
-    font-size: 62.5%
-    line-height:1.6em;
+    font-size: 62.5%;
+    line-height:2.56em;
     margin: 0px auto 0px auto;
     width: 720px;
     font-family: 'Lora', serif;
@@ -56,10 +56,20 @@ body {
 }
 
 p, ul, ol {
-    font-size: 1.35em;
+    font-size: 2.16em;
     line-height:1.6em;
     margin: 1em 0;
 }
+
+.post-row p {
+    color: #777;
+    font-size: 0.9em;
+    line-height:0.6em;
+    padding: 0;
+    margin: 0.25em 0 1.2em 0;
+    font-style:italic;
+}
+
 
 strong {
     font-weight: 600;
@@ -82,12 +92,12 @@ em, i {
 
 div#header {
     border-bottom: 2px solid #888;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     padding: 12px 0px 7px 0px;
 
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
-    font-size: 1.1em;
+    font-size: 1.76em;
     line-height: 1em;
     color: #888;
 }
@@ -113,7 +123,8 @@ div#header #navigation a {
 div#footer {
     border-top: solid 2px #888;
     color: #555;
-    font-size: 0.75em;
+    font-size: 1.2em;
+    line-height: 1em;
     margin-top: 30px;
     padding: 12px 0px 12px 0px;
     text-align: right;
@@ -128,35 +139,39 @@ div.footnotes p {
     line-height:1.6em;
 }
 
-h1 {
+#content h1 {
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
-    font-size: 4.566em;
+    font-size: 7.3em;
     line-height: 1.2em;
     color: #191C46;
-    margin: 0.3em 0
+    margin-top: 0.2em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+
 }
 
-h2 {
+#content h2 {
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
-    font-size: 3.038em;
+    font-size: 4.86em;
     line-height: 1.2em;
     color: #222;
 }
 
-h3 {
+#content h3 {
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
     line-height: 1.2em;
-    font-size: 2.025em;
+    font-size: 3.24em;
     color: #222;
 }
 
 div.info {
     color: #555;
-    font-size: 14px;
+    font-size: 1.6em;
     font-style: italic;
+    margin-bottom: 3.1em;
 }
 
 sub, sup {
@@ -182,11 +197,11 @@ sub, sup {
 
 sup {
   /* Move the superscripted text up */
-  top: -0.5em;
+  top: -0.8em;
 }
 
 sub {
   /* Move the subscripted text down, but only
      half as far down as the superscript moved up */
-  bottom: -0.25em;
+  bottom: -0.4em;
 }

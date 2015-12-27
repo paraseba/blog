@@ -1,5 +1,6 @@
 ---
 title: Beautiful Power Series
+description: A tiny Haskell formulation for power series
 ---
 
 I'm getting better at Haskell, or at least that's what I choose to believe. Anyway,

@@ -1,7 +1,25 @@
 <ul>
     $for(posts)$
-        <li>
-            <a href="$url$">$title$</a> - $date$
+        <li class="post-row" itemscope itemtype="http://schema.org/BlogPosting">
+
+          <a href="$url$">
+              <span itemprop="headline name">$title$</span>
+          </a>
+
+          <span itemscope itemprop="author">
+            <meta itemprop="name" content="Sebastian Galkin"/>
+          </span>
+
+          <p>
+            <time itemprop="datePublished" datetime="$isoDate$">$date$</time>
+            &mdash;
+            $if(description)$
+            <span class="post-descr" itemprop="description">
+                $description$
+            </span>
+            $endif$
+          </p>
+
         </li>
     $endfor$
 </ul>

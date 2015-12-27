@@ -1,8 +1,23 @@
-<div class="info">
-    Posted on $date$
-    $if(author)$
-        by $author$
-    $endif$
+<div itemscope itemtype="http://schema.org/BlogPosting">
+    <h1 itemprop="headline name">$title$</h1>
+
+    <div class="info">
+      <time itemprop="datePublished" datetime="$isoDate$">Posted on $date$</time>
+      <div itemscope itemprop="author creator editor">
+        $if(author)$
+            by <span itemprop="name">$author$</span>
+        $else$
+            <meta itemprop="name" content="Sebastian Galkin"/>
+        $endif$
+      </div>
+
+      $if(description)$
+        <meta itemprop="description" content="$description$"/>
+      $endif$
+
+    </div>
+    <div itemprop="articleBody">
+      $body$
+    </div>
 </div>
 
-$body$

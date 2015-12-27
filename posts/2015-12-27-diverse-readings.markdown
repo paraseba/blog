@@ -1,5 +1,6 @@
 ---
 title: Diverse readings
+description: Some good books I'm currently reading
 ---
 
 I usually read from two, three or more books during the same week. Unless there

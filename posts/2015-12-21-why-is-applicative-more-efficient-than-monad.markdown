@@ -1,5 +1,6 @@
 ---
 title: Why is Applicative More Efficient Than Monad
+description: One reason to use Applicative instead of Monad
 ---
 
 It is well known that `Monad` is more powerful than `Applicative` Functor. Using
