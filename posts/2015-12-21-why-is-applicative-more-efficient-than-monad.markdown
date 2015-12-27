@@ -186,7 +186,7 @@ main = do
     ]
 ```
 
-<img width="100%" src="../images/array-criterion.png" alt="Criterion Array Result"/>
+<img width="100%" src="/images/array-criterion.png" alt="Criterion Array Result"/>
 
 We see for `Arr` the `Applicative` is around three times faster than the `Monad`,
 while for lists, times are exactly the same.

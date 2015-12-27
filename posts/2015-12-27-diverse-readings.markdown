@@ -19,7 +19,7 @@ showing that we are writing the same code in many different domains.
 
 Good exercises, and very good real world examples of functional code.
 
-[<img alt="functional programming in scala cover" src="../images/fp-in-scala.jpg" width="70%"/>](https://www.manning.com/books/functional-programming-in-scala)
+[<img alt="functional programming in scala cover" src="/images/fp-in-scala.jpg" width="70%"/>](https://www.manning.com/books/functional-programming-in-scala)
 
 ## Basic Category Theory for Computer Scientists
 > by *Benjamin C. Pierce*
@@ -27,7 +27,7 @@ Good exercises, and very good real world examples of functional code.
 I'm group reading this with friends. Very short book, seems to
 be nice and to the point, but too soon to say.
 
-[<img alt="basic category theory for computer scientists cover" src="../images/basic-cat-the.jpg" width="70%"/>](https://mitpress.mit.edu/books/basic-category-theory-computer-scientists)
+[<img alt="basic category theory for computer scientists cover" src="/images/basic-cat-the.jpg" width="70%"/>](https://mitpress.mit.edu/books/basic-category-theory-computer-scientists)
 
 
 ## Anarchism
@@ -41,4 +41,4 @@ humane person.
 
 This one gets me plenty of weird looks on the Muni.
 
-[<img alt="Anarchis. a collection of revolutionary writings cover" src="../images/anarchism-krop.jpg" width="70%"/>](https://books.google.com/books?id=eUK8AQAAQBAJ&source=gbs_book_other_versions)
+[<img alt="Anarchis. a collection of revolutionary writings cover" src="/images/anarchism-krop.jpg" width="70%"/>](https://books.google.com/books?id=eUK8AQAAQBAJ&source=gbs_book_other_versions)
