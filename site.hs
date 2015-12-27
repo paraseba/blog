@@ -3,6 +3,7 @@
 {-# LANGUAGE FlexibleContexts  #-}
 import           Data.Monoid ((<>))
 import           Data.List (isInfixOf)
+import           Data.Char (isDigit)
 import           Hakyll
 import           Debug.Trace
 import           Data.Time (iso8601DateFormat)
@@ -75,13 +76,20 @@ postCtx =
     dateField "isoDate" (iso8601DateFormat Nothing) <>
     defaultContext
 
--- taken from http://yannesposito.com/Scratch/en/blog/Hakyll-setup/
--- replace a foo/bar.md by foo/bar/index.html
+-- based on code from http://yannesposito.com/Scratch/en/blog/Hakyll-setup/
+-- replace a 2015-12-25-foo/bar.md by foo/bar/index.html
 -- this way the url looks like: foo/bar in most browsers
 niceRoute :: Routes
 niceRoute = customRoute createIndexRoute
   where
-    createIndexRoute ident = dropExtension (toFilePath ident) </> "index.html"
+    createIndexRoute ident = cleanup (toFilePath ident) </> "index.html"
+    cleanup = dropUnwanted . dropExtension
+
+dropUnwanted :: FilePath -> FilePath
+dropUnwanted f = dirs </> dropWhile unwanted file
+  where
+    (dirs, file) = splitFileName f
+    unwanted c = any ($c) [(== '-'), (== '_'), isDigit]
 
 -- taken from http://yannesposito.com/Scratch/en/blog/Hakyll-setup/
 -- replace url of the form foo/bar/index.html by foo/bar
