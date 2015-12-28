@@ -7,7 +7,7 @@ import           Data.Char (isDigit)
 import           Hakyll
 import           Debug.Trace
 import           Data.Time (iso8601DateFormat)
-import           System.FilePath (dropExtension, splitFileName, (</>))
+import           System.FilePath (joinPath, splitPath, splitFileName, (-<.>))
 
 
 --------------------------------------------------------------------------------
@@ -22,14 +22,14 @@ main = hakyll $ do
         compile compressCssCompiler
 
     match (fromList ["about.markdown"]) $ do
-        route   $ niceRoute
+        route   $ constRoute "about/index.html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
             >>= removeIndexHtml
 
-    match "posts/*" $ do
-        route $ niceRoute
+    match "posts/*/index.markdown" $ do
+        route $ postRoute
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
@@ -54,7 +54,7 @@ main = hakyll $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- recentFirst =<< loadAll "posts/*/index.markdown"
             let indexCtx =
                     listField "posts" postCtx (return posts) <>
                     constField "title" "Blog"                <>
@@ -77,19 +77,16 @@ postCtx =
     defaultContext
 
 -- based on code from http://yannesposito.com/Scratch/en/blog/Hakyll-setup/
--- replace a 2015-12-25-foo/bar.md by foo/bar/index.html
--- this way the url looks like: foo/bar in most browsers
-niceRoute :: Routes
-niceRoute = customRoute createIndexRoute
+-- replace a 2015-12-25-foo/index.markdown by foo/index.html
+postRoute :: Routes
+postRoute = customRoute createIndexRoute
   where
-    createIndexRoute ident = cleanup (toFilePath ident) </> "index.html"
-    cleanup = dropUnwanted . dropExtension
-
-dropUnwanted :: FilePath -> FilePath
-dropUnwanted f = dirs </> dropWhile unwanted file
-  where
-    (dirs, file) = splitFileName f
+    createIndexRoute = (-<.> "html") . mapPath cleanup . toFilePath
+    cleanup = dropWhile unwanted
     unwanted c = any ($c) [(== '-'), (== '_'), isDigit]
+
+mapPath :: (String -> String) -> FilePath -> FilePath
+mapPath f = joinPath . map f . splitPath
 
 -- taken from http://yannesposito.com/Scratch/en/blog/Hakyll-setup/
 -- replace url of the form foo/bar/index.html by foo/bar
