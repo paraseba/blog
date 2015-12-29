@@ -252,7 +252,7 @@ can continue as:
 
 ## Code
 The complete code for the exercise and tests is on
-[GitHub](https://github.com/paraseba/blog/)
+[GitHub](https://github.com/paraseba/blog/blob/master/posts/2015-12-28-an-exercise-on-monoids/code/sorted.hs)
 
 [^1]: <sup>1</sup> `Init` is not essential to the problem, it's an artifact of
 having to use a `Monoid`, which requires `mempty`. An alternative way would be
