@@ -4,14 +4,12 @@
 module Main where
 
 import Data.Array
-import Data.Monoid
 import Data.List (genericLength)
 import Data.Foldable
 import Control.Monad (ap)
 
 import Criterion.Main
 import Test.QuickCheck
-import Test.QuickCheck.Function
 
 data Arr a = Arr {toArray :: !(Array Integer a)} deriving (Show, Eq)
 
