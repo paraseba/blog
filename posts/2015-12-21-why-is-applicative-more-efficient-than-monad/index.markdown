@@ -1,6 +1,8 @@
 ---
 title: Why is Applicative More Efficient Than Monad
 description: One reason to use Applicative instead of Monad
+meta-title: A Haskell example of how can the Applicative Functor be more efficient than the Monad
+meta-description: Title: Why is Applicative More Efficient Than Monad, Topic: Monad Applicative Functor performance, Language: Haskell, Published: 2015-12-21
 ---
 
 It is well known that `Monad` is more powerful than `Applicative` Functor. Using

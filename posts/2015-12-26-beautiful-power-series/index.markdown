@@ -1,6 +1,8 @@
 ---
 title: Beautiful Power Series
 description: A tiny Haskell formulation for power series
+meta-title: A Haskell formultation for power series
+meta-description: Title: Beautiful Power Series, Topic: Haskell lazyness math, Language: Haskell, Published: 2015-12-26
 ---
 
 I'm getting better at Haskell, or at least that's what I choose to believe. Anyway,

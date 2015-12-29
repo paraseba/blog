@@ -1,13 +1,15 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleContexts  #-}
-import           Data.Monoid ((<>))
-import           Data.List (isInfixOf)
-import           Data.Char (isDigit)
-import           Hakyll
+{-# LANGUAGE OverloadedStrings #-}
+import           Data.Char       (isDigit)
+import           Data.List       (isInfixOf)
+import qualified Data.Map        as M
+import           Data.Maybe      (fromMaybe)
+import           Data.Monoid     ((<>))
+import           Data.Time       (iso8601DateFormat)
 import           Debug.Trace
-import           Data.Time (iso8601DateFormat)
-import           System.FilePath (joinPath, splitPath, splitFileName, (-<.>))
+import           Hakyll
+import           System.FilePath (joinPath, splitFileName, splitPath, (-<.>))
 
 
 --------------------------------------------------------------------------------
@@ -24,7 +26,7 @@ main = hakyll $ do
     match (fromList ["about.markdown"]) $ do
         route   $ constRoute "about/index.html"
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" baseContext
             >>= relativizeUrls
             >>= removeIndexHtml
 
@@ -58,7 +60,7 @@ main = hakyll $ do
             let indexCtx =
                     listField "posts" postCtx (return posts) <>
                     constField "title" "Blog"                <>
-                    defaultContext
+                    baseContext
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
@@ -70,11 +72,23 @@ main = hakyll $ do
 
 
 --------------------------------------------------------------------------------
+metaContextWithDefault :: String -> String -> Context String
+metaContextWithDefault key defaultValue =
+  field key $ \item -> do
+    metadata <- getMetadata (itemIdentifier item)
+    return $ fromMaybe defaultValue $ M.lookup key metadata
+
+baseContext :: Context String
+baseContext =
+  metaContextWithDefault "meta-description" "My personal blog. I write mostly about programming, particularly Haskell and other functional languages"
+  <> metaContextWithDefault "meta-title" "Sebastian Galkin's Blog"
+  <> defaultContext
+
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" <>
     dateField "isoDate" (iso8601DateFormat Nothing) <>
-    defaultContext
+    baseContext
 
 -- based on code from http://yannesposito.com/Scratch/en/blog/Hakyll-setup/
 -- replace a 2015-12-25-foo/index.markdown by foo/index.html

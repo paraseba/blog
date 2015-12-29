@@ -1,6 +1,8 @@
 ---
 title: Diverse readings
 description: Some good books I'm currently reading
+meta-title: The three books I'm reading now
+meta-description: Title: Three good books, Topic: Scala Category Theory Anarchism, Published: 2015-12-27
 ---
 
 I usually read from two, three or more books during the same week. Unless there

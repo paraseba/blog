@@ -1,6 +1,8 @@
 ---
 title: An exercise using Monoids
 description: A simple but interesting Haskell problem using Monoids and Foldable
+meta-title: A Haskell exercise using Monoids and Foldable
+meta-description: Title: An exercise using Monoids, Topic: Monoids Foldable and Lazyness, Language: Haskell, Published: 2015-12-28
 ---
 
 I found a fun exercise in
