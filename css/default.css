@@ -55,16 +55,20 @@ body {
     text-align: justify;
 }
 
-p, ul, ol {
+#content p {
+    margin-bottom: 1.2em;
+}
+
+#content {
     font-size: 2.16em;
-    line-height:1.6em;
+    line-height:1.6;
     margin: 1em 0;
 }
 
 .post-row p {
     color: #777;
     font-size: 0.9em;
-    line-height:0.6em;
+    line-height:1.3;
     padding: 0;
     margin: 0.25em 0 1.2em 0;
     font-style:italic;
@@ -98,7 +102,7 @@ div#header {
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
     font-size: 1.76em;
-    line-height: 1em;
+    line-height: 1;
     color: #888;
 }
 
@@ -124,7 +128,7 @@ div#footer {
     border-top: solid 2px #888;
     color: #555;
     font-size: 1.2em;
-    line-height: 1em;
+    line-height: 1;
     margin-top: 30px;
     padding: 12px 0px 12px 0px;
     text-align: right;
@@ -136,40 +140,50 @@ div#footer a {
 
 div.footnotes p {
     font-size: 0.85em;
-    line-height:1.6em;
+    line-height:1.6;
 }
 
 #content h1 {
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
-    font-size: 7.3em;
-    line-height: 1.2em;
+    font-size: 3.38em;
+    line-height: 1.2;
     color: #191C46;
     margin-top: 0.2em;
     margin-bottom: 0;
     padding-bottom: 0;
+    text-align: initial;
+    word-spacing: 0.18em;
 
 }
 
 #content h2 {
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
-    font-size: 4.86em;
-    line-height: 1.2em;
+    font-size: 2.25em;
+    line-height: 1.2;
     color: #222;
+    margin-top: 1.3em;
+    margin-bottom: 0.7em;
+    text-align: initial;
+    word-spacing: 0.18em;
 }
 
 #content h3 {
     font-family: 'Alegreya Sans', sans-serif;
     font-weight: 700;
-    line-height: 1.2em;
-    font-size: 3.24em;
+    line-height: 1.2;
+    font-size: 1.5em;
     color: #222;
+    margin-top: 1.3em;
+    margin-bottom: 0.7em;
+    text-align: initial;
+    word-spacing: 0.18em;
 }
 
 div.info {
     color: #555;
-    font-size: 1.6em;
+    font-size: 0.74em;
     font-style: italic;
     margin-bottom: 3.1em;
 }
@@ -204,4 +218,29 @@ sub {
   /* Move the subscripted text down, but only
      half as far down as the superscript moved up */
   bottom: -0.4em;
+}
+
+blockquote {
+  //background: #f9f9f9;
+  border-left: 10px solid #c7c7cf;
+  margin: 1.5em 20px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+  font-style:italic;
+}
+blockquote p {
+  display: inline;
+}
+
+ul, ol {
+    list-style-position: outside;
+    padding-left: 1.3em;
+}
+
+ul {
+	  list-style-type: disc;
+}
+
+li {
+    margin-bottom: 1.0em;
 }
