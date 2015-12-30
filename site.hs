@@ -17,6 +17,10 @@ import           System.FilePath     (joinPath, splitFileName, splitPath,
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
+    match "favicon.ico" $ do
+        route idRoute
+        compile copyFileCompiler
+
     match "images/*" $ do
         route   idRoute
         compile copyFileCompiler
@@ -33,7 +37,7 @@ main = hakyll $ do
             >>= removeIndexHtml
 
     match "posts/*/index.markdown" $ do
-        route $ postRoute
+        route postRoute
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
