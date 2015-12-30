@@ -1,15 +1,17 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Char       (isDigit)
-import           Data.List       (isInfixOf)
-import qualified Data.Map        as M
-import           Data.Maybe      (fromMaybe)
-import           Data.Monoid     ((<>))
-import           Data.Time       (iso8601DateFormat)
+import qualified Control.Applicative as A
+import           Data.Char           (isDigit)
+import           Data.List           (isInfixOf)
+import qualified Data.Map            as M
+import           Data.Maybe          (fromMaybe)
+import           Data.Monoid         ((<>), First(..))
+import           Data.Time           (iso8601DateFormat)
 import           Debug.Trace
 import           Hakyll
-import           System.FilePath (joinPath, splitFileName, splitPath, (-<.>))
+import           System.FilePath     (joinPath, splitFileName, splitPath,
+                                      (-<.>))
 
 
 --------------------------------------------------------------------------------
@@ -59,7 +61,6 @@ main = hakyll $ do
             posts <- recentFirst =<< loadAll "posts/*/index.markdown"
             let indexCtx =
                     listField "posts" postCtx (return posts) <>
-                    constField "title" "Blog"                <>
                     baseContext
 
             getResourceBody
@@ -72,16 +73,43 @@ main = hakyll $ do
 
 
 --------------------------------------------------------------------------------
-metaContextWithDefault :: String -> String -> Context String
-metaContextWithDefault key defaultValue =
-  field key $ \item -> do
-    metadata <- getMetadata (itemIdentifier item)
-    return $ fromMaybe defaultValue $ M.lookup key metadata
+-- |Create a Context with key and value given by the functino f applied to
+-- the item metadata. If f returns Nothing an empty field will be created
+withMetaContext :: String -> (Metadata -> Maybe String) -> Context String
+withMetaContext key f = Context $ \k args i ->
+  if k == key
+     then getField i
+     else A.empty
+  where
+    getField item = do
+      meta <- getMetadata (itemIdentifier item)
+      case f meta of
+        (Just value) -> return (StringField value)
+        _ -> A.empty
+
+-- |Create a key in the context, setting its value from metadata.
+-- defaultKeys will be searched in the metadata using the first one
+-- that is present. The defaultValue is a last alternative.
+-- If no matching keys are found in the metadata and defaultValue == Nothing
+-- an empty attribute is created
+metaDefaultContext :: String -> [String] -> Maybe String -> Context String
+metaDefaultContext key defaultKeys defaultValue =
+  withMetaContext key getKey
+  where
+    getKey :: Metadata -> Maybe String
+    getKey meta = foldr1 (A.<|>) options
+      where options = map (`M.lookup` meta) (key:defaultKeys) ++ [defaultValue]
+
+defaultDescription :: String
+defaultDescription = "My personal blog. I write mostly about programming, particularly Haskell and other functional languages"
+
+defaultTitle :: String
+defaultTitle = "Sebastian Galkin's Blog"
 
 baseContext :: Context String
 baseContext =
-  metaContextWithDefault "meta-description" "My personal blog. I write mostly about programming, particularly Haskell and other functional languages"
-  <> metaContextWithDefault "meta-title" "Sebastian Galkin's Blog"
+  metaDefaultContext "meta-description" ["description"] (Just defaultDescription)
+  <> metaDefaultContext "meta-title" ["title"] (Just defaultTitle)
   <> defaultContext
 
 postCtx :: Context String
