@@ -11,7 +11,7 @@ import           Data.Time           (iso8601DateFormat)
 import           Debug.Trace
 import           Hakyll
 import           System.FilePath     (joinPath, splitFileName, splitPath,
-                                      (-<.>))
+                                      dropFileName, (-<.>))
 
 
 --------------------------------------------------------------------------------
@@ -116,10 +116,15 @@ baseContext =
   <> metaDefaultContext "meta-title" ["title"] (Just defaultTitle)
   <> defaultContext
 
+baseUrl :: String
+baseUrl = "http://blog.sebastian-galkin.com"
+
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" <>
     dateField "isoDate" (iso8601DateFormat Nothing) <>
+    metaDefaultContext "disqusId" ["title"] Nothing <>
+    mapContext ((baseUrl ++) . dropFileName) (urlField "disqusUrl") <>
     baseContext
 
 -- based on code from http://yannesposito.com/Scratch/en/blog/Hakyll-setup/
