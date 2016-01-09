@@ -45,21 +45,6 @@ main = hakyll $ do
             >>= relativizeUrls
             >>= removeIndexHtml
 
-    -- create ["archive.html"] $ do
-    --     route idRoute
-    --     compile $ do
-    --         posts <- recentFirst =<< loadAll "posts/*"
-    --         let archiveCtx =
-    --                 listField "posts" postCtx (return posts) <>
-    --                 constField "title" "Archives"            <>
-    --                 defaultContext
-
-    --         makeItem ""
-    --             >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-    --             >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-    --             >>= relativizeUrls
-
-
     match "index.html" $ do
         route idRoute
         compile $ do
