@@ -244,3 +244,7 @@ ul {
 li {
     margin-bottom: 1.0em;
 }
+
+#disqus_thread {
+    margin-top: 6em;
+}

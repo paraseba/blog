@@ -39,8 +39,9 @@ main = hakyll $ do
     match "posts/*/index.markdown" $ do
         route postRoute
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= loadAndApplyTemplate "templates/post.html"          postCtx
+            >>= loadAndApplyTemplate "templates/post-comments.html" postCtx
+            >>= loadAndApplyTemplate "templates/default.html"       postCtx
             >>= relativizeUrls
             >>= removeIndexHtml
 
