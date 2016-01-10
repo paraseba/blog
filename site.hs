@@ -40,6 +40,7 @@ main = hakyll $ do
         route postRoute
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"          postCtx
+            >>= saveSnapshot "feed"
             >>= loadAndApplyTemplate "templates/post-comments.html" postCtx
             >>= loadAndApplyTemplate "templates/default.html"       postCtx
             >>= relativizeUrls
@@ -60,6 +61,14 @@ main = hakyll $ do
                 >>= removeIndexHtml
 
     match "templates/*" $ compile templateCompiler
+
+    create ["atom.xml"] $ do
+        route idRoute
+        compile $ do
+            let feedCtx = bodyField "description" `mappend` postCtx
+            posts <- fmap (take 10) . recentFirst =<<
+                loadAllSnapshots "posts/*/index.markdown" "feed"
+            renderAtom atomConfiguration feedCtx posts
 
 
 --------------------------------------------------------------------------------
@@ -112,6 +121,15 @@ postCtx =
     metaDefaultContext "disqusId" ["title"] Nothing <>
     mapContext ((baseUrl ++) . dropFileName) (urlField "disqusUrl") <>
     baseContext
+
+atomConfiguration :: FeedConfiguration
+atomConfiguration = FeedConfiguration
+    { feedTitle       = defaultTitle
+    , feedDescription = defaultDescription
+    , feedAuthorName  = "Sebastian Galkin"
+    , feedAuthorEmail = "paraseba@gmail.com"
+    , feedRoot        = baseUrl
+    }
 
 -- based on code from http://yannesposito.com/Scratch/en/blog/Hakyll-setup/
 -- replace a 2015-12-25-foo/index.markdown by foo/index.html

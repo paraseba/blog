@@ -134,8 +134,14 @@ div#footer {
     text-align: right;
 }
 
+
 div#footer a {
     color: inherit;
+}
+
+div#footer a.feed-link {
+    text-align: left;
+    color: #06287e;
 }
 
 div.footnotes p {
