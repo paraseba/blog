@@ -109,6 +109,7 @@ baseContext :: Context String
 baseContext =
   metaDefaultContext "meta-description" ["description"] (Just defaultDescription)
   <> metaDefaultContext "meta-title" ["title"] (Just defaultTitle)
+  <> mapContext removeIndexStr (urlField "canonicalUrl")
   <> defaultContext
 
 baseUrl :: String
@@ -147,9 +148,9 @@ mapPath f = joinPath . map f . splitPath
 -- replace url of the form foo/bar/index.html by foo/bar
 removeIndexHtml :: Item String -> Compiler (Item String)
 removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
-  where
-    removeIndexStr :: String -> String
-    removeIndexStr url = case splitFileName url of
-        (dir, "index.html") | isLocal dir -> init dir
-        _                                 -> url
-        where isLocal uri = not (isInfixOf "://" uri)
+
+removeIndexStr :: String -> String
+removeIndexStr url = case splitFileName url of
+    (dir, "index.html") | isLocal dir -> init dir
+    _                                 -> url
+    where isLocal uri = not (isInfixOf "://" uri)
