@@ -113,7 +113,7 @@ baseContext =
   <> defaultContext
 
 baseUrl :: String
-baseUrl = "http://blog.sebastian-galkin.com"
+baseUrl = "https://blog.sebastian-galkin.com"
 
 postCtx :: Context String
 postCtx =
@@ -151,6 +151,6 @@ removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
 
 removeIndexStr :: String -> String
 removeIndexStr url = case splitFileName url of
-    (dir, "index.html") | isLocal dir -> init dir
+    (dir, "index.html") | isLocal dir -> dir
     _                                 -> url
     where isLocal uri = not (isInfixOf "://" uri)
