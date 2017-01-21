@@ -41,7 +41,6 @@ main = hakyll $ do
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"          postCtx
             >>= saveSnapshot "feed"
-            >>= loadAndApplyTemplate "templates/post-comments.html" postCtx
             >>= loadAndApplyTemplate "templates/default.html"       postCtx
             >>= relativizeUrls
             >>= removeIndexHtml
