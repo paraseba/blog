@@ -114,8 +114,6 @@ postCtx :: Context String
 postCtx =
   dateField "date" "%B %e, %Y" <>
   dateField "isoDate" (iso8601DateFormat Nothing) <>
-  metaDefaultContext "disqusId" ["title"] Nothing <>
-  mapContext ((baseUrl ++) . dropFileName) (urlField "disqusUrl") <>
   baseContext
 
 atomConfiguration :: FeedConfiguration
