@@ -3,7 +3,7 @@ published: 2016-01-09
 title: Misunderstanding Conway's law
 description: Some common mistakes engineering teams make applying Conway's law
 meta-title: Common mistakes applying Conway's law in software development
-meta-description: Title: Common mistakes applying Conway's law in software development, Topic: Software development, Conway's law, Published: 2016-01-08
+meta-description: "Title: Common mistakes applying Conway's law in software development, Topic: Software development, Conway's law, Published: 2016-01-08"
 ---
 
 > Any organization that designs a system (defined broadly) will produce a design

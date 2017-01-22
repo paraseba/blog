@@ -1,7 +1,7 @@
 ---
 title: About
 meta-title: Contact Sebastian Galkin
-meta-description: Name:Sebastian Galkin, Twitter: http://www.twitter.com/paraseba, E-mail: paraseba@gmail.com, GitHub: https://github.com/paraseba
+meta-description: "Name:Sebastian Galkin, Twitter: http://www.twitter.com/paraseba, E-mail: paraseba@gmail.com, GitHub: https://github.com/paraseba"
 ---
 
 ## I guess I'm blogging now?
