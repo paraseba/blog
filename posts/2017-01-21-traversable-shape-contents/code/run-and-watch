@@ -1,0 +1,4 @@
+#! /usr/bin/env nix-shell
+#! nix-shell -p pkgs.haskellPackages.transformers -i bash
+
+ls shape-contents.hs | entr runhaskell /_
