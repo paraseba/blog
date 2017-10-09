@@ -11,5 +11,6 @@ executable site
                   , containers
                   --, hakyll == 4.7.*
                   , hakyll
+                  , pandoc
   ghc-options:      -threaded
   default-language: Haskell2010

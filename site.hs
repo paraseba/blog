@@ -10,6 +10,8 @@ import Data.Monoid ((<>), First(..))
 import Data.Time (iso8601DateFormat)
 import Debug.Trace
 import Hakyll
+import qualified Data.Set
+import Text.Pandoc.Options (WriterOptions(..))
 import System.FilePath
        (joinPath, splitFileName, splitPath, dropFileName, (-<.>))
 
@@ -33,23 +35,37 @@ main =
         loadAndApplyTemplate "templates/default.html" baseContext >>=
         relativizeUrls >>=
         removeIndexHtml
+
     match "posts/*/index.markdown" $ do
       route postRoute
       compile $
-        pandocCompiler >>= loadAndApplyTemplate "templates/post.html" postCtx >>=
+        pandocCompilerWith defaultHakyllReaderOptions myHakyllWriterOptions >>=
+        loadAndApplyTemplate "templates/post.html" postCtx >>=
         saveSnapshot "feed" >>=
         loadAndApplyTemplate "templates/default.html" postCtx >>=
         relativizeUrls >>=
         removeIndexHtml
+
+    match "posts/*/index.lhs" $ do
+      route postRoute
+      compile $
+        pandocCompilerWith defaultHakyllReaderOptions myHakyllWriterOptions >>=
+        loadAndApplyTemplate "templates/post.html" postCtx >>=
+        saveSnapshot "feed" >>=
+        loadAndApplyTemplate "templates/default.html" postCtx >>=
+        relativizeUrls >>=
+        removeIndexHtml
+
     match "index.html" $ do
       route idRoute
       compile $ do
-        posts <- recentFirst =<< loadAll "posts/*/index.markdown"
+        posts <- recentFirst =<< loadAll "posts/*/index.*"
         let indexCtx = listField "posts" postCtx (return posts) <> baseContext
         getResourceBody >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/default.html" indexCtx >>=
           relativizeUrls >>=
           removeIndexHtml
+
     match "templates/*" $ compile templateCompiler
     create ["atom.xml"] $ do
       route idRoute
@@ -59,6 +75,7 @@ main =
           fmap (take 10) . recentFirst =<<
           loadAllSnapshots "posts/*/index.markdown" "feed"
         renderAtom atomConfiguration feedCtx posts
+
 
 --------------------------------------------------------------------------------
 -- |Create a Context with key and value given by the functino f applied to
@@ -151,3 +168,7 @@ removeIndexStr url =
     _ -> url
   where
     isLocal uri = not (isInfixOf "://" uri)
+
+myHakyllWriterOptions :: WriterOptions
+myHakyllWriterOptions = defaultHakyllWriterOptions
+    {writerExtensions = Data.Set.empty}
