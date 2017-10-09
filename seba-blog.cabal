@@ -9,7 +9,6 @@ executable site
                   , time
                   , filepath
                   , containers
-                  --, hakyll == 4.7.*
                   , hakyll
                   , pandoc
   ghc-options:      -threaded
