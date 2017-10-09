@@ -146,7 +146,7 @@ myMaximum xs = do
 
 Just like in the description of the algorithm, we create a variable and update
 it for every element that is larger than the initial value. When done iterating
-we return the last value holded by the variable.
+we return the last value hold by the variable.
 
 Now we need to write some tests:
 
