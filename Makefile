@@ -21,6 +21,9 @@ S3CMD = s3cmd --verbose --config ~/.s3cfg.blog.sebastian-galkin.com  \
 
 # $(info $$SITESOURCE is [${SITESOURCE}])
 
+site-watch: site-build
+	$(SITEBIN) watch
+
 default.nix: $(CABAL)
 	cabal2nix . > default.nix
 
@@ -32,14 +35,11 @@ $(SITEBIN): dist $(SOURCE)
 
 exe: $(SITEBIN)
 
-site-build: exe $(SITESOURCE)
+site-build: $(SITEBIN) $(SITESOURCE)
 	$(SITEBIN) build
 
-site-rebuild: exe $(SITESOURCE)
+site-rebuild: $(SITEBIN) $(SITESOURCE)
 	$(SITEBIN) rebuild
-
-site-watch: site-build
-	$(SITEBIN) watch
 
 deploy: site-rebuild
 	$(S3CMD)
@@ -51,7 +51,7 @@ shell:
 bin-clean:
 	$(INSHELL) 'cabal clean'
 
-site-clean: exe
+site-clean: $(SITEBIN)
 	$(INSHELL) '$(SITEBIN) clean'
 
 clean: site-clean bin-clean
