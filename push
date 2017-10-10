@@ -1,7 +1,0 @@
-#! /usr/bin/env bash
-
-s3cmd -v -c ~/.s3cfg.blog.sebastian-galkin.com  \
-      sync                                      \
-      --add-header="Cache-Control:max-age=3600" \
-      --delete-removed -M --no-mime-magic       \
-      _site/ s3://blog.sebastian-galkin.com
