@@ -6,13 +6,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="description" content="$meta-description$" />
 
-        <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700' rel='stylesheet' type='text/css'/>
-        <link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:700' rel='stylesheet' type='text/css'/>
-        <link href='https://fonts.googleapis.com/css?family=Inconsolata:700' rel='stylesheet' type='text/css'/>
 
         <title>$meta-title$</title>
         <link rel="stylesheet" type="text/css" href="/css/default.css" />
-        <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
         <link rel="shortcut icon" href="/favicon.ico">
         <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/atom.xml" />
         <link rel="canonical" href="https://blog.sebastian-galkin.com$canonicalUrl$" />
@@ -38,7 +34,7 @@
               <img alternate="atom feed" width="14" height="14" src="https://www.mozilla.org/media/img/trademarks/feed-icon-14x14.2168a573d0d4.png" />
             </a>
             <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-              <img alt="Creative Commons License" style="border-width:0" width="80" height="15" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+              <img alt="Creative Commons License" style="border-width:0" width="80" height="15" src="https://licensebuttons.net/l/by/4.0/80x15.png"/></a>
             <br />
             <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">This Blog</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://blog.sebastian-galkin.com" property="cc:attributionName" rel="cc:attributionURL">Sebastian Galkin</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
             <br />
@@ -48,5 +44,26 @@
             Site generated using
             <a href="http://jaspervdj.be/hakyll">Hakyll</a>
         </div>
+        <noscript id="deferred-styles">
+            <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700' rel='stylesheet' type='text/css'/>
+            <link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:700' rel='stylesheet' type='text/css'/>
+            <link href='https://fonts.googleapis.com/css?family=Inconsolata:700' rel='stylesheet' type='text/css'/>
+            <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+        </noscript>
+        <script>
+           <!-- This delayed style technique was taken from https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery -->
+            var loadDeferredStyles = function() {
+                var addStylesNode = document.getElementById("deferred-styles");
+                var replacement = document.createElement("div");
+                replacement.innerHTML = addStylesNode.textContent;
+                document.body.appendChild(replacement)
+                addStylesNode.parentElement.removeChild(addStylesNode);
+            };
+            var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+                webkitRequestAnimationFrame || msRequestAnimationFrame;
+            if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+            else window.addEventListener('load', loadDeferredStyles);
+        </script>
+
     </body>
 </html>
