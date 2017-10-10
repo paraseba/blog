@@ -15,6 +15,7 @@ S3BUCKET = s3://blog.sebastian-galkin.com
 S3CMD = s3cmd --verbose --config ~/.s3cfg.blog.sebastian-galkin.com  \
       sync \
       --add-header="Cache-Control:max-age=3600" \
+      --no-preserve \
       --delete-removed -M --no-mime-magic       \
       _site/ $(S3BUCKET)
 
