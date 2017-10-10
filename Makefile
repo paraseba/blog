@@ -1,0 +1,57 @@
+.PHONY: bin-clean site-clean clean exe shell site-build site-rebuild site-watch deploy
+
+CABAL = seba-blog.cabal
+INSHELL = nix-shell release.nix -A blog-seba.env --run
+SITEBIN = dist/build/site/site
+
+SOURCE = site.hs
+SITESOURCE = $(shell find -name '*.markdown' \
+	-o -name '*.html' -o -name '*.ico' \
+	-o -name '*.html' -o -name '*.ico' \
+	-o -name '*.lhs' -o -name '*.css' \
+	-o -name '*.jpg' -o -name '*.png')
+
+S3BUCKET = s3://blog.sebastian-galkin.com
+S3CMD = s3cmd --verbose --config ~/.s3cfg.blog.sebastian-galkin.com  \
+      sync \
+      --add-header="Cache-Control:max-age=3600" \
+      --delete-removed -M --no-mime-magic       \
+      _site/ $(S3BUCKET)
+
+
+# $(info $$SITESOURCE is [${SITESOURCE}])
+
+default.nix: $(CABAL)
+	cabal2nix . > default.nix
+
+dist: default.nix
+	$(INSHELL) 'cabal configure'
+
+$(SITEBIN): dist $(SOURCE)
+	$(INSHELL) 'cabal build'
+
+exe: $(SITEBIN)
+
+site-build: exe $(SITESOURCE)
+	$(SITEBIN) build
+
+site-rebuild: exe $(SITESOURCE)
+	$(SITEBIN) rebuild
+
+site-watch: site-build
+	$(SITEBIN) watch
+
+deploy: site-rebuild
+	$(S3CMD)
+
+
+shell:
+	nix-shell release.nix -A blog-seba.env
+
+bin-clean:
+	$(INSHELL) 'cabal clean'
+
+site-clean: exe
+	$(INSHELL) '$(SITEBIN) clean'
+
+clean: site-clean bin-clean
