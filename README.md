@@ -1,6 +1,6 @@
 # My blog
 
-[Deployed here][https://blog.sebastian-galkin.com/]
+[Deployed here](https://blog.sebastian-galkin.com/)
 
 - clean all: make clean
 - nix-shell with all dependencies: make shell
