@@ -41,17 +41,7 @@ main =
         relativizeUrls >>=
         removeIndexHtml
 
-    match "posts/*/index.markdown" $ do
-      route postRoute
-      compile $
-        pandocCompilerWith defaultHakyllReaderOptions myHakyllWriterOptions >>=
-        loadAndApplyTemplate "templates/post.html" postCtx >>=
-        saveSnapshot "feed" >>=
-        loadAndApplyTemplate "templates/default.html" postCtx >>=
-        relativizeUrls >>=
-        removeIndexHtml
-
-    match "posts/*/index.lhs" $ do
+    match "posts/*/index.*" $ do
       route postRoute
       compile $
         pandocCompilerWith defaultHakyllReaderOptions myHakyllWriterOptions >>=
