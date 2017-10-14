@@ -1,4 +1,4 @@
-.PHONY: bin-clean site-clean clean exe shell site-build site-rebuild site-watch deploy
+.PHONY: bin-clean site-clean clean exe shell site-build site-rebuild site-watch deploy configure build
 
 CABAL = seba-blog.cabal
 INSHELL = nix-shell release.nix -A blog-seba.env --run
@@ -28,13 +28,16 @@ site-watch: site-build
 default.nix: $(CABAL)
 	cabal2nix . > default.nix
 
-dist: default.nix
+dist: default.nix release.nix
 	$(INSHELL) 'cabal configure'
+
+configure: dist
 
 $(SITEBIN): dist $(SOURCE)
 	$(INSHELL) 'cabal build'
 
 exe: $(SITEBIN)
+build: exe
 
 site-build: $(SITEBIN) $(SITESOURCE)
 	$(SITEBIN) build
