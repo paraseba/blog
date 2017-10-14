@@ -30,9 +30,11 @@ main =
     match "images/*" $ do
       route idRoute
       compile copyFileCompiler
+
     match "css/*" $ do
       route idRoute
       compile compressCssCompiler
+
     match (fromList ["about.markdown"]) $ do
       route $ constRoute "about/index.html"
       compile $
@@ -51,6 +53,16 @@ main =
         relativizeUrls >>=
         removeIndexHtml
 
+    match "drafts/*/index.*" $ do
+      route postRoute
+      let ctx = noIndex postCtx
+      compile $
+        pandocCompilerWith defaultHakyllReaderOptions myHakyllWriterOptions >>=
+        loadAndApplyTemplate "templates/post.html" ctx >>=
+        loadAndApplyTemplate "templates/default.html" ctx >>=
+        relativizeUrls >>=
+        removeIndexHtml
+
     match "index.html" $ do
       route idRoute
       compile $ do
@@ -62,6 +74,7 @@ main =
           removeIndexHtml
 
     match "templates/*" $ compile templateCompiler
+
     create ["atom.xml"] $ do
       route idRoute
       compile $ do
@@ -127,6 +140,9 @@ postCtx =
   dateField "date" "%B %e, %Y" <>
   dateField "isoDate" (iso8601DateFormat Nothing) <>
   baseContext
+
+noIndex :: Context a -> Context a
+noIndex = (boolField "noindex" (const True) <>)
 
 atomConfiguration :: FeedConfiguration
 atomConfiguration =
