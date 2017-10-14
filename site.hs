@@ -81,7 +81,7 @@ main =
         let feedCtx = bodyField "description" `mappend` postCtx
         posts <-
           fmap (take 10) . recentFirst =<<
-          loadAllSnapshots "posts/*/index.markdown" "feed"
+          loadAllSnapshots "posts/*/index.*" "feed"
         renderAtom atomConfiguration feedCtx posts
 
 
