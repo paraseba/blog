@@ -54,7 +54,7 @@ modify f v = get v >>= set v . f
 Now we can provide different implementations for variables. First one in `IO`
 
 \begin{code}
-newtype IOVar a = IOVar (IOArray Int a)
+newtype IOVar a = IOVar (IOArray () a)
 \end{code}
 
 We represent the value as an array of a single element. This is obviously
@@ -62,14 +62,15 @@ overkill, but the goal was also to experiment with the low level array API
 
 \begin{code}
 instance Var IOVar IO a where
-  new = fmap IOVar . newArray (0, 0)
-  get (IOVar ar) = readArray ar 0
-  set (IOVar ar) a = writeArray ar 0 a
+  new = fmap IOVar . newArray ((), ())
+  get (IOVar ar) = readArray ar ()
+  set (IOVar ar) a = writeArray ar () a
 \end{code}
 
-The implementation is straightforward, reading and writing from/to the position
-0 in the array. Creation needs to take care of wrapping the array in the `IOVar`
-constructor.
+The implementation is straightforward, reading and writing from/to the the array.
+Creation needs to take care of wrapping the array in the `IOVar`
+constructor. Notice that `()` is a valid index type for arrays, and it makes obvious
+in the type the fact that the array has a single element.
 
 Providing an implementation in the `ST` monad is not much harder. Here, we could
 also use an `STArray`, but we go directly to `STRef` for simplicity
