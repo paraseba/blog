@@ -12,6 +12,7 @@ import Debug.Trace
 import Hakyll
 import qualified Data.Set
 import Text.Pandoc.Options (WriterOptions(..))
+import Text.Pandoc.Extensions (Extension(Ext_smart), disableExtension)
 import System.FilePath
        (joinPath, splitFileName, splitPath, dropFileName, (-<.>))
 
@@ -182,4 +183,7 @@ removeIndexStr url =
 
 myHakyllWriterOptions :: WriterOptions
 myHakyllWriterOptions = defaultHakyllWriterOptions
-    {writerExtensions = Data.Set.empty}
+    {writerExtensions = extensions}
+  where
+    extensions =
+      disableExtension Ext_smart $ writerExtensions defaultHakyllWriterOptions
